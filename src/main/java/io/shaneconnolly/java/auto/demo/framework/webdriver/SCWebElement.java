@@ -13,6 +13,9 @@ import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+
+import java.util.Optional;
+
 @Data
 public class SCWebElement extends RemoteWebElement {
 
@@ -20,15 +23,15 @@ public class SCWebElement extends RemoteWebElement {
 
     private String name;
     private By by;
-    private WebElement origWebElement;
+    private Optional<WebElement> origWebElement;
     private String type;
 
     public SCWebElement(String name, String css) throws Exception {
         try {
             this.name = name;
             this.by = By.cssSelector(css);
-            new WebDriverWait(TestSession.getWebDriver(), 15).until(ExpectedConditions.visibilityOfElementLocated(this.by));
-            this.origWebElement = TestSession.getWebDriver().findElement(this.by);
+            new WebDriverWait(TestSession.getWebDriver(), 2).until(ExpectedConditions.visibilityOfElementLocated(this.by));
+            this.origWebElement = Optional.of(TestSession.getWebDriver().findElement(this.by));
         } catch (NoSuchElementException ex) {
             logger.info("COULD NOT FIND :: " + this.name);
             logger.error("BY :: " + this.by.toString());
@@ -42,13 +45,12 @@ public class SCWebElement extends RemoteWebElement {
 
     public boolean doClick() {
         logger.info("CLICKING :: " + this.name);
-        try {
-            this.origWebElement.click();
+         if(this.origWebElement.isPresent()) {
+             this.origWebElement.get().click();
             return true;
-        } catch (NullPointerException ex) {
-            logger.info("ISSUE CLICKING :: " + this.name);
-            return false;
-        }
+         } else {
+             return false;
+         }
     }
 
 
