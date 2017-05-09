@@ -11,9 +11,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class WaitHelper {
 
-    final static Logger logger = Logger.getLogger(WaitHelper.class);
-    final static int PAGE_LOAD_TIME_OUT = 45;
-    final static int POP_UP_LOAD_TIME_OUT = 2;
+    private final static Logger logger = Logger.getLogger(WaitHelper.class);
+    private final static int PAGE_LOAD_TIME_OUT = 45;
+    private final static int POP_UP_LOAD_TIME_OUT = 2;
 
     public static void staticWait(int secs){
         logger.info("STATIC WAITING FOR SECS ::: " + secs);
@@ -26,15 +26,17 @@ public class WaitHelper {
     }
 
     public static void waitForPageLoad(SCWebElement pageLoaderElement){
-        logger.info("WAITING PAGE LOAD ::: " + pageLoaderElement.getName());
-        new WebDriverWait(TestSession.getWebDriver(),
-                PAGE_LOAD_TIME_OUT).until(ExpectedConditions.visibilityOfElementLocated(pageLoaderElement.getBy()));
+        waitHelper(pageLoaderElement, PAGE_LOAD_TIME_OUT, "WAITING PAGE LOAD");
     }
 
     public static void waitForPopUpShown(SCWebElement popUpUniqueElement){
-        logger.info("WAITING POP UP ::: " + popUpUniqueElement.getName());
+       waitHelper(popUpUniqueElement, POP_UP_LOAD_TIME_OUT, "WAITING FOR POPUP");
+    }
+
+    private static void waitHelper(SCWebElement element, int timeOut, String logMessage){
+        logger.info(logMessage + " ::: " + element.getName());
         new WebDriverWait(TestSession.getWebDriver(),
-                POP_UP_LOAD_TIME_OUT).until(ExpectedConditions.visibilityOfElementLocated(popUpUniqueElement.getBy()));
+                timeOut).until(ExpectedConditions.visibilityOfElementLocated(element.getBy()));
     }
 
 }

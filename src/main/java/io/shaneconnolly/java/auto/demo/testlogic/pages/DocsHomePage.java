@@ -12,7 +12,7 @@ public class DocsHomePage {
     }
 
     public static SCWebElement btnSheetsApp() throws Exception {
-        return new SCWebElement("btnSheetsApp", "bodsy > header > nav > ul.nav-main > li:nth-child(2) > a");
+        return new SCWebElement("btnSheetsApp", "body > header > nav > ul.nav-main > li:nth-child(2) > a");
     }
 
 }
