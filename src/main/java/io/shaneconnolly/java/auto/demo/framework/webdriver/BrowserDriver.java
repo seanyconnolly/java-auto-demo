@@ -9,6 +9,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by seany on 24/02/17.
@@ -19,8 +20,9 @@ public class BrowserDriver {
 
     public static void setWebDriver() {
         webDriver = setChromeWebDriver();
+        webDriver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         TestSession.setWebDriver(webDriver);
-
     }
 
     private static WebDriver setChromeWebDriver() {
